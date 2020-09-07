@@ -1,0 +1,48 @@
+@startuml
+
+class Repository << (S,#FF7700) Singleton >>
+class Repository
+    note right: Dependency Injection \n using Dagger2
+package Cloud <<Cloud>> {
+}
+package Database <<Database>> {
+}
+
+'package View <<Rectangle>> {
+'  class DetailsFragment
+'  class ListFragment
+'  class MainActivity
+'  class Activity
+'}
+'
+'
+'package ViewModel <<Rectangle>>{
+'    class ViewModel
+'    class DetailsViewModel
+'    class ListViewModel
+'}
+'
+'
+'package Model <<Rectangle>>{
+'    class WebService
+'    class LocalStorage
+'    class Repository
+'}
+
+AppCompatActivity <|-- MainActivity   : Extends
+MainActivity  --*  OverviewFragment : contains
+MainActivity  --*  DetailsFragment : contains
+DetailsFragment --* DetailsViewModel :  contains
+DetailsFragment .. DetailsViewModel :  LiveData
+OverviewFragment --* OverviewViewModel : contains
+OverviewFragment .. OverviewViewModel : LiveData
+ViewModel <|-- OverviewViewModel: extends
+ViewModel <|-- DetailsViewModel: extends
+DetailsViewModel --* Repository : contains
+OverviewViewModel --* Repository : contains
+Repository --* WebService : contains
+Repository --* LocalStorage : contains
+WebService --> Cloud :Retrofit
+LocalStorage --> Database: room
+
+@enduml
