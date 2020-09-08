@@ -1,59 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
 
     <TextView
         android:id="@+id/articleTitle"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="TextView"
-        android:textAllCaps="true"
-        android:textSize="18sp"
+        android:text="A Cake for Kotlin: Exploring framework-less dependency injection for Kotlin"
+        android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/author"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="By"
-        app:layout_constraintEnd_toEndOf="@+id/articleTitle"
-        app:layout_constraintTop_toBottomOf="@+id/articleTitle" />
-
-    <TextView
-        android:id="@+id/upVotes"
+        android:id="@+id/articleSelfText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-
-
-        android:text="TextView"
-        app:layout_constraintStart_toStartOf="@+id/articleTitle"
-        app:layout_constraintTop_toBottomOf="@+id/articleTitle" />
-
-    <TextView
-        android:id="@+id/url"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:clickable="true"
-        android:contextClickable="false"
-        android:text="TextView"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10dp"
+        android:text="Is it possible to create a list of strings given a list of CharArray, in which each string is formed  by the elements that occupy the index i in each CharArray in the list? Like this:\nList&lt;CharArray&gt; = {[A,B,C],[D,E,F]} then the resulting List&lt;String&gt; = {“AD”, “BE”, “CF”}. If it is possible to do this using as many collections functions as possible. I wish to understand them as much as I can, here is where Kotlin shines (besides its concise and pretty syntax)"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/author" />
+        app:layout_constraintTop_toBottomOf="@id/articleTitle" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 

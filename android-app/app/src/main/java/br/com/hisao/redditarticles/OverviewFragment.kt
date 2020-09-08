@@ -30,8 +30,16 @@ class OverviewFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+        viewBinding = FragmentOverviewBinding.inflate(layoutInflater)
+
+        val adapter = OverviewAdapter()
+        viewBinding.articleList.adapter = adapter
+
         viewModel.liveData.observe(viewLifecycleOwner) {
             if (it.status == Status.SUCCESS) {
+                it?.let {
+                    adapter.data = it.data?.data?.children!!
+                }
                 Log.d("REDDIT_ARTICLES", "onCreateView: SUCCESS")
             } else if (it.status == Status.ERROR) {
                 Log.d("REDDIT_ARTICLES", "onCreateView: ERROR")
@@ -42,7 +50,6 @@ class OverviewFragment : Fragment() {
             }
         }
 
-        viewBinding = FragmentOverviewBinding.inflate(layoutInflater)
         viewBinding.somebutton.setOnClickListener {
             Toast.makeText(context, "vamosoooos.", Toast.LENGTH_LONG).show()
             view?.findNavController()?.navigate(R.id.detailsFragment)
