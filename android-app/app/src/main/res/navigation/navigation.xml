@@ -18,5 +18,9 @@
         android:id="@+id/detailsFragment"
         android:name="br.com.hisao.redditarticles.DetailsFragment"
         android:label="fragment_details"
-        tools:layout="@layout/fragment_details" />
+        tools:layout="@layout/fragment_details" >
+        <argument
+            android:name="articleId"
+            app:argType="string" />
+    </fragment>
 </navigation>

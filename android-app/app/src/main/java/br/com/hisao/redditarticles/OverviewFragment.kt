@@ -2,22 +2,22 @@ package br.com.hisao.redditarticles
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.navigation.findNavController
 import br.com.hisao.redditarticles.databinding.FragmentOverviewBinding
 import com.android.example.github.vo.Status
-import java.time.LocalDate
 
 
 class OverviewFragment : Fragment() {
 
-    private lateinit var viewBinding: FragmentOverviewBinding
+    private lateinit var dataBinding: FragmentOverviewBinding
 
     private val overviewViewModelFactory = OverviewViewModelFactory()
 
@@ -30,15 +30,16 @@ class OverviewFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        viewBinding = FragmentOverviewBinding.inflate(layoutInflater)
-
-        val adapter = OverviewAdapter()
-        viewBinding.articleList.adapter = adapter
+        dataBinding = FragmentOverviewBinding.inflate(layoutInflater)
+        val adapter = OverviewAdapter(ArticleOnClickListener {
+            viewModel.onArticleListClicked(it)
+        })
+        dataBinding.articleList.adapter = adapter
 
         viewModel.liveData.observe(viewLifecycleOwner) {
             if (it.status == Status.SUCCESS) {
                 it?.let {
-                    adapter.data = it.data?.data?.children!!
+                    adapter.submitList(it.data?.data?.children!!)
                 }
                 Log.d("REDDIT_ARTICLES", "onCreateView: SUCCESS")
             } else if (it.status == Status.ERROR) {
@@ -50,13 +51,18 @@ class OverviewFragment : Fragment() {
             }
         }
 
-        viewBinding.somebutton.setOnClickListener {
+        dataBinding.somebutton.setOnClickListener {
             Toast.makeText(context, "vamosoooos.", Toast.LENGTH_LONG).show()
-            view?.findNavController()?.navigate(R.id.detailsFragment)
-
         }
+        viewModel.navigateToArticleDetail.observe(viewLifecycleOwner, Observer { id ->
+            id?.let {
+                view?.findNavController()
+                    ?.navigate(OverviewFragmentDirections.actionOverviewFragmentToDetailsFragment(it))
+                viewModel.navigatedToArticleDetail()
+            }
+        })
 
-        return viewBinding.root
+        return dataBinding.root
     }
 
 }

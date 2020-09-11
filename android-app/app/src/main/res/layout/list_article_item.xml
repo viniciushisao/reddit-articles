@@ -1,32 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data></data>
 
-    <TextView
-        android:id="@+id/articleTitle"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/root"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="A Cake for Kotlin: Exploring framework-less dependency injection for Kotlin"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_margin="10dp"
+        android:background="@android:color/white">
 
-    <TextView
-        android:id="@+id/articleSelfText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="Is it possible to create a list of strings given a list of CharArray, in which each string is formed  by the elements that occupy the index i in each CharArray in the list? Like this:\nList&lt;CharArray&gt; = {[A,B,C],[D,E,F]} then the resulting List&lt;String&gt; = {“AD”, “BE”, “CF”}. If it is possible to do this using as many collections functions as possible. I wish to understand them as much as I can, here is where Kotlin shines (besides its concise and pretty syntax)"
-        android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/articleTitle" />
+        <TextView
+            android:id="@+id/articleTitle"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:text="A Cake for Kotlin: Exploring framework-less dependency injection for Kotlin"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/articleSelfText"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:text="Is it possible to create a list of strings given a list of CharArray, in which each string is formed  by the elements that occupy the index i in each CharArray in the list? Like this:\nList&lt;CharArray&gt; = {[A,B,C],[D,E,F]} then the resulting List&lt;String&gt; = {“AD”, “BE”, “CF”}. If it is possible to do this using as many collections functions as possible. I wish to understand them as much as I can, here is where Kotlin shines (besides its concise and pretty syntax)"
+            app:autoSizeMaxTextSize="100sp"
+            app:autoSizeMinTextSize="12sp"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/articleTitle" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
 
 

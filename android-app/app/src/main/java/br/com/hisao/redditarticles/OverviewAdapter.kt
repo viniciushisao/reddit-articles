@@ -1,40 +1,36 @@
 package br.com.hisao.redditarticles
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import br.com.hisao.redditarticles.databinding.ListArticleItemBinding
 import br.com.hisao.redditarticles.model.json.Children
 
-
-class OverviewAdapter : RecyclerView.Adapter<ViewHolder>() {
-    var data = listOf<Children>()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
+class OverviewAdapter(val clickListener: ArticleOnClickListener) :
+    ListAdapter<Children, ViewHolder>(ChildrenDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(data[position])
+        holder.bind(getItem(position), clickListener)
     }
-
-    override fun getItemCount() = data.size
 }
 
-class ViewHolder private constructor(viewBinding: ListArticleItemBinding) :
-    RecyclerView.ViewHolder(viewBinding.root) {
+class ViewHolder private constructor(private val dataBinding: ListArticleItemBinding) :
+    RecyclerView.ViewHolder(dataBinding.root) {
 
-    var title: TextView = viewBinding.articleTitle
-    var desc: TextView = viewBinding.articleSelfText
+    fun bind(item: Children, clickListener: ArticleOnClickListener) {
 
-    fun bind(item: Children) {
-        title.text = item.data.title
-        desc.text = item.data.selftext
+        dataBinding.articleTitle.text = item.data.title
+        dataBinding.articleSelfText.text = item.data.selftext
+        dataBinding.root.setOnClickListener {
+            clickListener.onClick(item)
+        }
     }
 
     companion object {
@@ -44,4 +40,18 @@ class ViewHolder private constructor(viewBinding: ListArticleItemBinding) :
             return ViewHolder(viewBinding)
         }
     }
+}
+
+class ChildrenDiffCallback : DiffUtil.ItemCallback<Children>() {
+    override fun areItemsTheSame(oldItem: Children, newItem: Children): Boolean {
+        return oldItem.data.id == newItem.data.id
+    }
+
+    override fun areContentsTheSame(oldItem: Children, newItem: Children): Boolean {
+        return oldItem == newItem
+    }
+}
+
+class ArticleOnClickListener(val clickListener: (articleId: String) -> Unit) {
+    fun onClick(children: Children) = clickListener(children.data.id)
 }
