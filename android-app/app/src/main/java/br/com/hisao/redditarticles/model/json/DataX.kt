@@ -1,12 +1,17 @@
 package br.com.hisao.redditarticles.model.json
 
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.squareup.moshi.Json
 
+@Entity (tableName =  "teste")
 data class DataX(
     @Json(name = "approved_at_utc")
     val approvedAtUtc: Any?,
     val subreddit: String,
+    @ColumnInfo(name = "selftext")
     val selftext: String,
     @Json(name = "author_fullname")
     val authorFullname: String,
@@ -15,6 +20,7 @@ data class DataX(
     val modReasonTitle: Any?,
     val gilded: Int,
     val clicked: Boolean,
+    @ColumnInfo(name = "title")
     val title: String,
     @Json(name = "link_flair_richtext")
     val linkFlairRichtext: List<Any>,
@@ -62,6 +68,7 @@ data class DataX(
     val score: Int,
     @Json(name = "approved_by")
     val approvedBy: Any?,
+    @ColumnInfo(name = "thumbnail_uri")
     val thumbnail: String,
     val edited: Any,
     @Json(name = "author_flair_css_class")
@@ -130,6 +137,7 @@ data class DataX(
     val removalReason: Any?,
     @Json(name = "link_flair_background_color")
     val linkFlairBackgroundColor: String,
+    @PrimaryKey
     val id: String,
     @Json(name = "is_robot_indexable")
     val isRobotIndexable: Boolean,
