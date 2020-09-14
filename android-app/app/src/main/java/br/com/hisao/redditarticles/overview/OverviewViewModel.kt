@@ -1,7 +1,8 @@
-package br.com.hisao.redditarticles
+package br.com.hisao.redditarticles.overview
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import br.com.hisao.redditarticles.RedditRepository
 import javax.inject.Inject
 
 class OverviewViewModel @Inject constructor(

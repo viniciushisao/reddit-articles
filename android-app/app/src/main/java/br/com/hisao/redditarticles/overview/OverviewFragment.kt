@@ -1,4 +1,4 @@
-package br.com.hisao.redditarticles
+package br.com.hisao.redditarticles.overview
 
 import android.os.Bundle
 import android.util.Log
@@ -19,11 +19,6 @@ class OverviewFragment : Fragment() {
 
     private lateinit var dataBinding: FragmentOverviewBinding
 
-    private val overviewViewModelFactory = OverviewViewModelFactory()
-
-    private val viewModel: OverviewViewModel by lazy {
-        ViewModelProvider(this, overviewViewModelFactory).get(OverviewViewModel::class.java)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,6 +26,15 @@ class OverviewFragment : Fragment() {
     ): View? {
 
         dataBinding = FragmentOverviewBinding.inflate(layoutInflater)
+
+        val application = requireNotNull(this.activity).application
+        val overviewViewModelFactory = OverviewViewModelFactory(application)
+
+        val viewModel: OverviewViewModel by lazy {
+            ViewModelProvider(this, overviewViewModelFactory).get(OverviewViewModel::class.java)
+        }
+
+
         val adapter = OverviewAdapter(ArticleOnClickListener {
             viewModel.onArticleListClicked(it)
         })
@@ -39,7 +43,7 @@ class OverviewFragment : Fragment() {
         viewModel.liveData.observe(viewLifecycleOwner) {
             if (it.status == Status.SUCCESS) {
                 it?.let {
-                    adapter.submitList(it.data?.data?.children!!)
+                    adapter.submitList(it.data)
                 }
                 Log.d("REDDIT_ARTICLES", "onCreateView: SUCCESS")
             } else if (it.status == Status.ERROR) {

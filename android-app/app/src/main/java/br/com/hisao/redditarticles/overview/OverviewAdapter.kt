@@ -1,7 +1,6 @@
-package br.com.hisao.redditarticles
+package br.com.hisao.redditarticles.overview
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
