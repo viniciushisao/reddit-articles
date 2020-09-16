@@ -20,17 +20,19 @@ class RedditRepository @Inject constructor(
     private val articleDatabaseDao: ArticleDatabaseDao
 ) {
     private val webservice: RedditWebServiceApi = RedditWebServiceApi
+    val articleRepositoryMutableLiveData = MutableLiveData<Resource<Children>>()
+    val articleListRepositoryMutableLiveData = MutableLiveData<Resource<List<Children>>>()
+
     fun getArticles(subject: String): LiveData<Resource<List<Children>>> {
 
-        val liveData = MutableLiveData<Resource<List<Children>>>()
-        liveData.postValue(Resource.loading(null))
+        articleListRepositoryMutableLiveData.postValue(Resource.loading(null))
 
         coroutineScope.launch {
             val getNewsDefered = webservice.RETROFIT_SERVICE_RETROFIT.getArticles(subject)
             var exception: Exception? = null
             try {
                 val result = getNewsDefered.await().data.children
-                liveData.postValue(Resource.success(result))
+                articleListRepositoryMutableLiveData.postValue(Resource.success(result))
                 clearDatabase()
                 addInDatabase(result)
             } catch (e: Exception) {
@@ -42,28 +44,25 @@ class RedditRepository @Inject constructor(
                 try {
                     if (getDatabaseCount() > 0) {
                         val result = getListChildrenObject(getAllArticlesFromDatabase())
-                        liveData.postValue(Resource.success(result))
+                        articleListRepositoryMutableLiveData.postValue(Resource.success(result))
                     }
                 } catch (ex: Exception) {
-                    liveData.postValue(Resource.error(ex.localizedMessage ?: "", null))
+                    articleListRepositoryMutableLiveData.postValue(Resource.error(ex.localizedMessage ?: "", null))
                 }
             }
         }
-        return liveData
+        return articleListRepositoryMutableLiveData
     }
 
-
-    val articleLiveData = MutableLiveData<Resource<Children>>()
-
     fun getArticle(articleId: String) {
-        articleLiveData.postValue(Resource.loading(null))
+        articleRepositoryMutableLiveData.postValue(Resource.loading(null))
         coroutineScope.launch {
             try {
                 val result = getArticleFromDatabase(articleId)
-                articleLiveData.postValue(Resource.success(getChildrenObject(result)))
+                articleRepositoryMutableLiveData.postValue(Resource.success(getChildrenObject(result)))
             } catch (ex: Exception) {
                 Log.d("REDDIT_ARTICLES", "RedditRepository:getArticle: " + ex.localizedMessage)
-                articleLiveData.postValue(Resource.error(ex.localizedMessage ?: "", null))
+                articleRepositoryMutableLiveData.postValue(Resource.error(ex.localizedMessage ?: "", null))
             }
         }
     }

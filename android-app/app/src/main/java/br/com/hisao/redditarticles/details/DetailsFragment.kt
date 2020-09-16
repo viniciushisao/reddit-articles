@@ -33,7 +33,7 @@ class DetailsFragment : Fragment() {
             ViewModelProvider(this, detailsViewModelFactory).get(DetailsViewModel::class.java)
         }
 
-        viewModel.articleLiveData.observe(viewLifecycleOwner) {
+        viewModel.articleViewModelLiveData.observe(viewLifecycleOwner) {
             if (it.status == Status.SUCCESS) {
                 it.let {
                     dataBinding.articleSelfText.text = it.data?.data?.selftext?.trim()

@@ -1,23 +1,33 @@
 package br.com.hisao.redditarticles.overview
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import br.com.hisao.redditarticles.RedditRepository
+import br.com.hisao.redditarticles.model.Resource
+import br.com.hisao.redditarticles.model.json.Children
 import javax.inject.Inject
 
 class OverviewViewModel @Inject constructor(
-    redditRepository: RedditRepository,
-    subject: String
+    val redditRepository: RedditRepository
 ) : ViewModel() {
-    val liveData = redditRepository.getArticles(subject)
+
+    val articleListViewModelLiveData: LiveData<Resource<List<Children>>>
+        get() = redditRepository.articleListRepositoryMutableLiveData
 
     private val _navigateToArticleDetail = MutableLiveData<String>()
     val navigateToArticleDetail
         get() = _navigateToArticleDetail
 
-    fun onArticleListClicked(id: String){
+
+    fun fetchArticleList(subject: String) {
+        redditRepository.getArticles(subject)
+    }
+
+    fun onArticleListClicked(id: String) {
         _navigateToArticleDetail.value = id
     }
+
     fun navigatedToArticleDetail() {
         _navigateToArticleDetail.value = null
     }

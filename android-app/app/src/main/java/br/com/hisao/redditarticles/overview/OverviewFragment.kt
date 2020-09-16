@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -14,10 +13,10 @@ import androidx.navigation.findNavController
 import br.com.hisao.redditarticles.databinding.FragmentOverviewBinding
 import br.com.hisao.redditarticles.model.Status
 
-
 class OverviewFragment : Fragment() {
 
     private lateinit var dataBinding: FragmentOverviewBinding
+    private val defaultWordToSearch = "kotlin"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,7 +38,7 @@ class OverviewFragment : Fragment() {
 
         dataBinding.articleList.adapter = adapter
 
-        viewModel.liveData.observe(viewLifecycleOwner) {
+        viewModel.articleListViewModelLiveData.observe(viewLifecycleOwner) {
 
             changeScreen(it.status)
 
@@ -65,10 +64,11 @@ class OverviewFragment : Fragment() {
             }
         })
 
+        viewModel.fetchArticleList(defaultWordToSearch)
         return dataBinding.root
     }
 
-    fun changeScreen(status: Status) {
+    private fun changeScreen(status: Status) {
         if (status == Status.LOADING) {
             dataBinding.articleList.visibility = View.GONE
             dataBinding.loadingcontainer.visibility = View.VISIBLE
