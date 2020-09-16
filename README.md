@@ -19,3 +19,6 @@ There is **zero** test implemented.
 
 ## UI
 Actually is not missing. This code shows only *wireframes* and focus on the background architecure. It is ready to receive any other format of design because it is implemented in the most simplistic way.
+
+## Pagination
+This is not a must, but I believe the API is able to do it. 
