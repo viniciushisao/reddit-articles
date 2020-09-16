@@ -8,26 +8,6 @@ package Cloud <<Cloud>> {
 package Database <<Database>> {
 }
 
-'package View <<Rectangle>> {
-'  class DetailsFragment
-'  class ListFragment
-'  class MainActivity
-'  class Activity
-'}
-'
-'
-'package ViewModel <<Rectangle>>{
-'    class ViewModel
-'    class DetailsViewModel
-'    class ListViewModel
-'}
-'
-'
-'package Model <<Rectangle>>{
-'    class WebService
-'    class LocalStorage
-'    class Repository
-'}
 
 AppCompatActivity <|-- MainActivity   : Extends
 MainActivity  --*  OverviewFragment : contains

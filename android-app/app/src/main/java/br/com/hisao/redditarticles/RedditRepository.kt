@@ -5,9 +5,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import br.com.hisao.redditarticles.db.ArticleDatabaseDao
 import br.com.hisao.redditarticles.model.ArticleEntity
-import br.com.hisao.redditarticles.model.json.*
-import com.android.example.github.vo.Resource
-import com.squareup.moshi.Json
+import br.com.hisao.redditarticles.model.Resource
+import br.com.hisao.redditarticles.model.json.Children
+import br.com.hisao.redditarticles.model.json.DataX
 import kotlinx.coroutines.*
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -15,14 +15,12 @@ import javax.inject.Singleton
 private var viewModelJob = Job()
 private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
-
 @Singleton
 class RedditRepository @Inject constructor(
     private val articleDatabaseDao: ArticleDatabaseDao
 ) {
     private val webservice: RedditWebServiceApi = RedditWebServiceApi
     fun getArticles(subject: String): LiveData<Resource<List<Children>>> {
-
 
         val liveData = MutableLiveData<Resource<List<Children>>>()
         liveData.postValue(Resource.loading(null))
@@ -33,6 +31,8 @@ class RedditRepository @Inject constructor(
             try {
                 val result = getNewsDefered.await().data.children
                 liveData.postValue(Resource.success(result))
+                clearDatabase()
+                addInDatabase(result)
             } catch (e: Exception) {
                 Log.d("REDDIT_ARTICLES", "getArticles: ERROR " + e.localizedMessage)
                 exception = e
@@ -41,16 +41,31 @@ class RedditRepository @Inject constructor(
             if (exception != null) {
                 try {
                     if (getDatabaseCount() > 0) {
-                        val result = getListChildrenObject(getAllArticles())
+                        val result = getListChildrenObject(getAllArticlesFromDatabase())
                         liveData.postValue(Resource.success(result))
                     }
                 } catch (ex: Exception) {
-                    Log.d(
-                        "REDDIT_ARTICLES",
-                        "getRedditNewsProperties: ERROR " + ex.localizedMessage
-                    )
                     liveData.postValue(Resource.error(ex.localizedMessage ?: "", null))
                 }
+            }
+        }
+        return liveData
+    }
+
+
+
+    fun getArticle(articleId: String): LiveData<Resource<Children>> {
+
+        val liveData = MutableLiveData<Resource<Children>>()
+        liveData.postValue(Resource.loading(null))
+
+        coroutineScope.launch {
+            try {
+                val result = getArticleFromDatabase(articleId)
+                liveData.postValue(Resource.success(getChildrenObject(result)))
+            } catch (ex: Exception) {
+                Log.d("REDDIT_ARTICLES", "RedditRepository:getArticle: " + ex.localizedMessage)
+                liveData.postValue(Resource.error(ex.localizedMessage ?: "", null))
             }
         }
         return liveData
@@ -76,9 +91,15 @@ class RedditRepository @Inject constructor(
         }
     }
 
-    private suspend fun getAllArticles(): List<ArticleEntity> {
+    private suspend fun getAllArticlesFromDatabase(): List<ArticleEntity> {
         return withContext(Dispatchers.IO) {
             articleDatabaseDao.getAllArticles()
+        }
+    }
+
+    private suspend fun getArticleFromDatabase(articleId: String): ArticleEntity {
+        return withContext(Dispatchers.IO) {
+            articleDatabaseDao.getArticle(articleId)
         }
     }
 
@@ -196,10 +217,10 @@ class RedditRepository @Inject constructor(
 
     private fun getDatabaseObject(children: Children): ArticleEntity {
         return ArticleEntity(
-            children.data.selftext,
-            children.data.title,
+            children.data.selftext ?: "",
+            children.data.title ?: "",
             children.data.id,
-            children.data.thumbnail
+            children.data.thumbnail ?: ""
         )
     }
 }

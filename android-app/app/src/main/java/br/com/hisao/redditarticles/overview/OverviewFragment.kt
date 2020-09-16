@@ -12,13 +12,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.navigation.findNavController
 import br.com.hisao.redditarticles.databinding.FragmentOverviewBinding
-import com.android.example.github.vo.Status
+import br.com.hisao.redditarticles.model.Status
 
 
 class OverviewFragment : Fragment() {
 
     private lateinit var dataBinding: FragmentOverviewBinding
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,15 +33,18 @@ class OverviewFragment : Fragment() {
             ViewModelProvider(this, overviewViewModelFactory).get(OverviewViewModel::class.java)
         }
 
-
         val adapter = OverviewAdapter(ArticleOnClickListener {
             viewModel.onArticleListClicked(it)
         })
+
         dataBinding.articleList.adapter = adapter
 
         viewModel.liveData.observe(viewLifecycleOwner) {
+
+            changeScreen(it.status)
+
             if (it.status == Status.SUCCESS) {
-                it?.let {
+                it.let {
                     adapter.submitList(it.data)
                 }
                 Log.d("REDDIT_ARTICLES", "onCreateView: SUCCESS")
@@ -55,9 +57,6 @@ class OverviewFragment : Fragment() {
             }
         }
 
-        dataBinding.somebutton.setOnClickListener {
-            Toast.makeText(context, "vamosoooos.", Toast.LENGTH_LONG).show()
-        }
         viewModel.navigateToArticleDetail.observe(viewLifecycleOwner, Observer { id ->
             id?.let {
                 view?.findNavController()
@@ -67,6 +66,22 @@ class OverviewFragment : Fragment() {
         })
 
         return dataBinding.root
+    }
+
+    fun changeScreen(status: Status) {
+        if (status == Status.LOADING) {
+            dataBinding.articleList.visibility = View.GONE
+            dataBinding.loadingcontainer.visibility = View.VISIBLE
+            dataBinding.errorcontainer.visibility = View.GONE
+        } else if (status == Status.SUCCESS) {
+            dataBinding.articleList.visibility = View.VISIBLE
+            dataBinding.loadingcontainer.visibility = View.GONE
+            dataBinding.errorcontainer.visibility = View.GONE
+        } else if (status == Status.ERROR) {
+            dataBinding.articleList.visibility = View.GONE
+            dataBinding.loadingcontainer.visibility = View.GONE
+            dataBinding.errorcontainer.visibility = View.VISIBLE
+        }
     }
 
 }

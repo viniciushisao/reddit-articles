@@ -13,7 +13,7 @@ interface ArticleDatabaseDao {
     fun insert(data: ArticleEntity)
 
     @Query("SELECT * from article WHERE article.id = :id")
-    fun get(id: String): ArticleEntity
+    fun getArticle(id: String): ArticleEntity
 
     @Query("DELETE FROM article")
     fun clear()

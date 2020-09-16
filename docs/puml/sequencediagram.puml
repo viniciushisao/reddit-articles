@@ -1,0 +1,28 @@
+@startuml
+actor user
+
+box "app"
+participant manager
+database database
+endbox
+
+box "internet"
+participant reddit
+endbox
+
+
+user -> manager : open
+manager --> user : loading
+alt success
+manager -> reddit : retrieve search list
+reddit --> manager : list
+manager -> database : save list
+manager --> user: list
+user -> manager : choose article
+manager -> database : get article (id)
+database --> manager : article
+manager --> user : article details
+end
+
+
+@enduml

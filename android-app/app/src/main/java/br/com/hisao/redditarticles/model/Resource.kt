@@ -1,4 +1,4 @@
-package com.android.example.github.vo
+package br.com.hisao.redditarticles.model
 
 /**
  * A generic class that holds a value with its loading status.
