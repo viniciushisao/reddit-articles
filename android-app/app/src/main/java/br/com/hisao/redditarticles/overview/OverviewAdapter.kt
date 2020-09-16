@@ -8,11 +8,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import br.com.hisao.redditarticles.databinding.ListArticleItemBinding
-import br.com.hisao.redditarticles.model.json.DataX
+import br.com.hisao.redditarticles.model.json.Article
 import com.bumptech.glide.Glide
 
 class OverviewAdapter(private val clickListener: ArticleOnClickListener) :
-    ListAdapter<DataX, ViewHolder>(DataXDiffCallback()) {
+    ListAdapter<Article, ViewHolder>(ArticleDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)
@@ -26,7 +26,7 @@ class OverviewAdapter(private val clickListener: ArticleOnClickListener) :
 class ViewHolder private constructor(private val dataBinding: ListArticleItemBinding) :
     RecyclerView.ViewHolder(dataBinding.root) {
 
-    fun bind(item: DataX, clickListener: ArticleOnClickListener) {
+    fun bind(item: Article, clickListener: ArticleOnClickListener) {
 
         dataBinding.articleTitle.text = item.title
         dataBinding.articleSelfText.text = item.selftext
@@ -56,16 +56,16 @@ class ViewHolder private constructor(private val dataBinding: ListArticleItemBin
     }
 }
 
-class DataXDiffCallback : DiffUtil.ItemCallback<DataX>() {
-    override fun areItemsTheSame(oldItem: DataX, newItem: DataX): Boolean {
+class ArticleDiffCallback : DiffUtil.ItemCallback<Article>() {
+    override fun areItemsTheSame(oldItem: Article, newItem: Article): Boolean {
         return oldItem.id == newItem.id
     }
 
-    override fun areContentsTheSame(oldItem: DataX, newItem: DataX): Boolean {
+    override fun areContentsTheSame(oldItem: Article, newItem: Article): Boolean {
         return oldItem == newItem
     }
 }
 
 class ArticleOnClickListener(val clickListener: (articleId: String) -> Unit) {
-    fun onClick(dataX: DataX) = clickListener(dataX.id)
+    fun onClick(article: Article) = clickListener(article.id)
 }

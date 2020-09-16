@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import br.com.hisao.redditarticles.db.ArticleDatabaseDao
 import br.com.hisao.redditarticles.model.Resource
 import br.com.hisao.redditarticles.model.json.Children
-import br.com.hisao.redditarticles.model.json.DataX
+import br.com.hisao.redditarticles.model.json.Article
 import kotlinx.coroutines.*
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -19,11 +19,11 @@ class RedditRepository @Inject constructor(
     private val articleDatabaseDao: ArticleDatabaseDao
 ) {
     private val webservice: RedditWebServiceApi = RedditWebServiceApi
-    val articleRepositoryMutableLiveData = MutableLiveData<Resource<DataX>>()
-    val articleListRepositoryMutableLiveData = MutableLiveData<Resource<List<DataX>>>()
+    val articleRepositoryMutableLiveData = MutableLiveData<Resource<Article>>()
+    val articleListRepositoryMutableLiveData = MutableLiveData<Resource<List<Article>>>()
 
 
-    fun getArticles(subject: String): LiveData<Resource<List<DataX>>> {
+    fun getArticles(subject: String): LiveData<Resource<List<Article>>> {
 
         articleListRepositoryMutableLiveData.postValue(Resource.loading(null))
 
@@ -31,7 +31,7 @@ class RedditRepository @Inject constructor(
             val getNewsDefered = webservice.RETROFIT_SERVICE_RETROFIT.getArticles(subject)
             var exception: Exception? = null
             try {
-                val result = getListDataX(getNewsDefered.await().data.children)
+                val result = getListArticle(getNewsDefered.await().data.children)
                 articleListRepositoryMutableLiveData.postValue(Resource.success(result))
                 clearDatabase()
                 addInDatabase(result)
@@ -82,7 +82,7 @@ class RedditRepository @Inject constructor(
         }
     }
 
-    private suspend fun addInDatabase(list: List<DataX>) {
+    private suspend fun addInDatabase(list: List<Article>) {
         withContext(Dispatchers.IO) {
             for (i in list) {
                 articleDatabaseDao.insert(i)
@@ -96,22 +96,22 @@ class RedditRepository @Inject constructor(
         }
     }
 
-    private suspend fun getAllArticlesFromDatabase(): List<DataX> {
+    private suspend fun getAllArticlesFromDatabase(): List<Article> {
         return withContext(Dispatchers.IO) {
             articleDatabaseDao.getAllArticles()
         }
     }
 
-    private suspend fun getArticleFromDatabase(articleId: String): DataX {
+    private suspend fun getArticleFromDatabase(articleId: String): Article {
         return withContext(Dispatchers.IO) {
             articleDatabaseDao.getArticle(articleId)
         }
     }
 
 
-    private fun getListDataX(list: List<Children>): List<DataX> {
+    private fun getListArticle(list: List<Children>): List<Article> {
 
-        val ans: MutableList<DataX> = ArrayList()
+        val ans: MutableList<Article> = ArrayList()
 
         for (children in list) {
 

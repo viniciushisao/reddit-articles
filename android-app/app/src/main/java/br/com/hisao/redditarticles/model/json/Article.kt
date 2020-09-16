@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "article")
 
-data class DataX(
+data class Article(
 
     @ColumnInfo(name = "selftext")
     var selftext: String?,
