@@ -53,22 +53,19 @@ class RedditRepository @Inject constructor(
     }
 
 
+    val articleLiveData = MutableLiveData<Resource<Children>>()
 
-    fun getArticle(articleId: String): LiveData<Resource<Children>> {
-
-        val liveData = MutableLiveData<Resource<Children>>()
-        liveData.postValue(Resource.loading(null))
-
+    fun getArticle(articleId: String) {
+        articleLiveData.postValue(Resource.loading(null))
         coroutineScope.launch {
             try {
                 val result = getArticleFromDatabase(articleId)
-                liveData.postValue(Resource.success(getChildrenObject(result)))
+                articleLiveData.postValue(Resource.success(getChildrenObject(result)))
             } catch (ex: Exception) {
                 Log.d("REDDIT_ARTICLES", "RedditRepository:getArticle: " + ex.localizedMessage)
-                liveData.postValue(Resource.error(ex.localizedMessage ?: "", null))
+                articleLiveData.postValue(Resource.error(ex.localizedMessage ?: "", null))
             }
         }
-        return liveData
     }
 
     private suspend fun clearDatabase() {

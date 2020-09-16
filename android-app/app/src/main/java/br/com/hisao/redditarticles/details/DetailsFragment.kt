@@ -27,13 +27,13 @@ class DetailsFragment : Fragment() {
         val articleId = args.articleId
 
         val application = requireNotNull(this.activity).application
-        val detailsViewModelFactory = DetailsViewModelFactory(application, articleId)
+        val detailsViewModelFactory = DetailsViewModelFactory(application)
 
         val viewModel: DetailsViewModel by lazy {
             ViewModelProvider(this, detailsViewModelFactory).get(DetailsViewModel::class.java)
         }
 
-        viewModel.liveData.observe(viewLifecycleOwner) {
+        viewModel.articleLiveData.observe(viewLifecycleOwner) {
             if (it.status == Status.SUCCESS) {
                 it.let {
                     dataBinding.articleSelfText.text = it.data?.data?.selftext?.trim()
@@ -51,23 +51,8 @@ class DetailsFragment : Fragment() {
             }
         }
 
-//        viewModel.liveData.observe(viewLifecycleOwner) {
-//            if (it.status == Status.SUCCESS) {
-//                it.let {
-//                    dataBinding.articleSelfText.text = it.data?.data?.selftext?.trim()
-//                    dataBinding.articleTitle.text = it.data?.data?.title?.trim()
-//                }
-//            } else if (it.status == Status.ERROR) {
-//                //TODO
-//                Log.d("REDDIT_ARTICLES", "onCreateView: ERROR")
-//            } else if (it.status == Status.LOADING) {
-//                //TODO
-//                Log.d("REDDIT_ARTICLES", "onCreateView: LOADING")
-//            } else {
-//                //TODO
-//                Log.d("REDDIT_ARTICLES", "onCreateView: NOT RECOGNIZED")
-//            }
-//        }
+
+        viewModel.fetchData(articleId)
         return dataBinding.root
     }
 }
