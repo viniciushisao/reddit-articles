@@ -14,14 +14,17 @@ endbox
 user -> manager : open
 manager --> user : loading
 alt success
-manager -> reddit : retrieve search list
+manager -> reddit : fetch article list
 reddit --> manager : list
-manager -> database : save list
-manager --> user: list
+manager -> database : save article list
+manager --> user: article list
 user -> manager : choose article
 manager -> database : get article (id)
 database --> manager : article
 manager --> user : article details
+user -> manager : back to article list
+manager -> reddit : fetch article list
+
 end
 
 
