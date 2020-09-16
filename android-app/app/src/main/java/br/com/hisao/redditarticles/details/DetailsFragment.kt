@@ -36,8 +36,8 @@ class DetailsFragment : Fragment() {
         viewModel.articleViewModelLiveData.observe(viewLifecycleOwner) {
             if (it.status == Status.SUCCESS) {
                 it.let {
-                    dataBinding.articleSelfText.text = it.data?.data?.selftext?.trim()
-                    dataBinding.articleTitle.text = it.data?.data?.title?.trim()
+                    dataBinding.articleSelfText.text = it.data?.selftext?.trim()
+                    dataBinding.articleTitle.text = it.data?.title?.trim()
                 }
             } else if (it.status == Status.ERROR) {
                 //TODO

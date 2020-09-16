@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import br.com.hisao.redditarticles.db.ArticleDatabaseDao
-import br.com.hisao.redditarticles.model.ArticleEntity
 import br.com.hisao.redditarticles.model.Resource
 import br.com.hisao.redditarticles.model.json.Children
 import br.com.hisao.redditarticles.model.json.DataX
@@ -20,10 +19,11 @@ class RedditRepository @Inject constructor(
     private val articleDatabaseDao: ArticleDatabaseDao
 ) {
     private val webservice: RedditWebServiceApi = RedditWebServiceApi
-    val articleRepositoryMutableLiveData = MutableLiveData<Resource<Children>>()
-    val articleListRepositoryMutableLiveData = MutableLiveData<Resource<List<Children>>>()
+    val articleRepositoryMutableLiveData = MutableLiveData<Resource<DataX>>()
+    val articleListRepositoryMutableLiveData = MutableLiveData<Resource<List<DataX>>>()
 
-    fun getArticles(subject: String): LiveData<Resource<List<Children>>> {
+
+    fun getArticles(subject: String): LiveData<Resource<List<DataX>>> {
 
         articleListRepositoryMutableLiveData.postValue(Resource.loading(null))
 
@@ -31,7 +31,7 @@ class RedditRepository @Inject constructor(
             val getNewsDefered = webservice.RETROFIT_SERVICE_RETROFIT.getArticles(subject)
             var exception: Exception? = null
             try {
-                val result = getNewsDefered.await().data.children
+                val result = getListDataX(getNewsDefered.await().data.children)
                 articleListRepositoryMutableLiveData.postValue(Resource.success(result))
                 clearDatabase()
                 addInDatabase(result)
@@ -43,11 +43,15 @@ class RedditRepository @Inject constructor(
             if (exception != null) {
                 try {
                     if (getDatabaseCount() > 0) {
-                        val result = getListChildrenObject(getAllArticlesFromDatabase())
+                        val result = getAllArticlesFromDatabase()
                         articleListRepositoryMutableLiveData.postValue(Resource.success(result))
                     }
                 } catch (ex: Exception) {
-                    articleListRepositoryMutableLiveData.postValue(Resource.error(ex.localizedMessage ?: "", null))
+                    articleListRepositoryMutableLiveData.postValue(
+                        Resource.error(
+                            ex.localizedMessage ?: "", null
+                        )
+                    )
                 }
             }
         }
@@ -59,10 +63,15 @@ class RedditRepository @Inject constructor(
         coroutineScope.launch {
             try {
                 val result = getArticleFromDatabase(articleId)
-                articleRepositoryMutableLiveData.postValue(Resource.success(getChildrenObject(result)))
+                articleRepositoryMutableLiveData.postValue(Resource.success(result))
             } catch (ex: Exception) {
                 Log.d("REDDIT_ARTICLES", "RedditRepository:getArticle: " + ex.localizedMessage)
-                articleRepositoryMutableLiveData.postValue(Resource.error(ex.localizedMessage ?: "", null))
+                articleRepositoryMutableLiveData.postValue(
+                    Resource.error(
+                        ex.localizedMessage ?: "",
+                        null
+                    )
+                )
             }
         }
     }
@@ -73,10 +82,10 @@ class RedditRepository @Inject constructor(
         }
     }
 
-    private suspend fun addInDatabase(list: List<Children>) {
+    private suspend fun addInDatabase(list: List<DataX>) {
         withContext(Dispatchers.IO) {
             for (i in list) {
-                articleDatabaseDao.insert(getDatabaseObject(i))
+                articleDatabaseDao.insert(i)
             }
         }
     }
@@ -87,138 +96,31 @@ class RedditRepository @Inject constructor(
         }
     }
 
-    private suspend fun getAllArticlesFromDatabase(): List<ArticleEntity> {
+    private suspend fun getAllArticlesFromDatabase(): List<DataX> {
         return withContext(Dispatchers.IO) {
             articleDatabaseDao.getAllArticles()
         }
     }
 
-    private suspend fun getArticleFromDatabase(articleId: String): ArticleEntity {
+    private suspend fun getArticleFromDatabase(articleId: String): DataX {
         return withContext(Dispatchers.IO) {
             articleDatabaseDao.getArticle(articleId)
         }
     }
 
-    private fun getListChildrenObject(input: List<ArticleEntity>): List<Children> {
-        val list = ArrayList<Children>()
-        for (i in input) {
-            list.add(getChildrenObject(i))
+
+    private fun getListDataX(list: List<Children>): List<DataX> {
+
+        val ans: MutableList<DataX> = ArrayList()
+
+        for (children in list) {
+
+            ans.add(children.data)
+
         }
-        return list
+        return ans
     }
 
-    private fun getChildrenObject(articleEntity: ArticleEntity): Children {
-        val dataX = DataX(
-            articleEntity.selftext,
-            articleEntity.title,
-            articleEntity.id,
-            articleEntity.thumbnail,
-            null,
-            null,
-            null,
-            false,
-            null,
-            0,
-            false,
-            null,
-            null,
-            false,
-            0,
-            null,
-            0,
-            false,
-            null,
-            false,
-            null,
-            null,
-            null,
-            0,
-            0,
-            null,
-            null,
-            false,
-            null,
-            null,
-            false,
-            false,
-            null,
-            null,
-            null,
-            false,
-            0,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            false,
-            null,
-            0.0,
-            null,
-            0,
-            null,
-            null,
-            null,
-            false,
-            null,
-            null,
-            null,
-            null,
-            null,
-            false,
-            false,
-            false,
-            false,
-            false,
-            null,
-            null,
-            false,
-            false,
-            false,
-            false,
-            null,
-            false,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            false,
-            null,
-            null,
-            null,
-            null,
-            false,
-            null,
-            false,
-            null,
-            false,
-            null,
-            null,
-            null,
-            false,
-            null,
-            null,
-            0.0,
-            0,
-            0,
-            false
-        )
-        return Children("", dataX)
-    }
-
-    private fun getDatabaseObject(children: Children): ArticleEntity {
-        return ArticleEntity(
-            children.data.selftext ?: "",
-            children.data.title ?: "",
-            children.data.id,
-            children.data.thumbnail ?: ""
-        )
-    }
 }
 
 

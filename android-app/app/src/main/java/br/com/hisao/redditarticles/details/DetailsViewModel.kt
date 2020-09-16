@@ -4,14 +4,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import br.com.hisao.redditarticles.RedditRepository
 import br.com.hisao.redditarticles.model.Resource
-import br.com.hisao.redditarticles.model.json.Children
+import br.com.hisao.redditarticles.model.json.DataX
 import javax.inject.Inject
 
 class DetailsViewModel @Inject constructor(
     val redditRepository: RedditRepository
 ) : ViewModel() {
 
-    val articleViewModelLiveData: LiveData<Resource<Children>>
+    val articleViewModelLiveData: LiveData<Resource<DataX>>
         get() = redditRepository.articleRepositoryMutableLiveData
 
     fun fetchData(articleId: String) {

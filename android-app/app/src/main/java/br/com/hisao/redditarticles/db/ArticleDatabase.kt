@@ -5,9 +5,9 @@ import android.content.Context
 import androidx.room.Database;
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import br.com.hisao.redditarticles.model.ArticleEntity
+import br.com.hisao.redditarticles.model.json.DataX
 
-@Database(entities = [ArticleEntity::class], version = 1, exportSchema = false)
+@Database(entities = [DataX::class], version = 1, exportSchema = false)
 abstract class ArticleDatabase : RoomDatabase() {
 
     abstract val dao: ArticleDatabaseDao
