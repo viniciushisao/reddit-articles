@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId "br.com.hisao.redditarticles"
-        minSdkVersion 16
+        minSdkVersion 23
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -36,7 +36,6 @@ android {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
 }
-
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
