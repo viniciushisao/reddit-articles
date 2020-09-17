@@ -1,3 +1,7 @@
+# Compile
+
+Android running kotlin and Gradle. Use your favorite tools to compile and run
+
 # What is
 It retrieves **one** page of reddit api. This page, by default is *kotlin* 
 
@@ -22,3 +26,5 @@ Actually is not missing. This code shows only *wireframes* and focus on the back
 
 ## Pagination
 This is not a must, but I believe the API is able to do it. 
+
+
