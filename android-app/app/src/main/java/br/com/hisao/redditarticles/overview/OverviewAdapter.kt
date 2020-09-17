@@ -40,7 +40,7 @@ class ViewHolder private constructor(private val dataBinding: ListArticleItemBin
                 .load(item.thumbnail)
                 .centerCrop()
                 .placeholder(android.R.drawable.spinner_background)
-                .into(dataBinding.thumb);
+                .into(dataBinding.thumb)
         }
         dataBinding.root.setOnClickListener {
             clickListener.onClick(item)

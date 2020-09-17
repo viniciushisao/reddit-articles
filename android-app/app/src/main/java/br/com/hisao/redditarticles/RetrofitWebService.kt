@@ -24,7 +24,7 @@ private val retrofit = Retrofit.Builder()
 
 interface RetrofitWebServiceInterface{
     @GET("r/{subject}/.json")
-    fun getArticles(@Path("subject") subject: String): Deferred<RedditNews>
+    fun getArticlesAsync(@Path("subject") subject: String): Deferred<RedditNews>
 }
 
 object RedditWebServiceApi{

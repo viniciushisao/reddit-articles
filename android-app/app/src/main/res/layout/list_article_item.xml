@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data></data>
+    <data />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/root"
@@ -16,6 +15,7 @@
             android:id="@+id/thumb"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:contentDescription="@string/image_related_to_the_text"
             app:layout_constraintEnd_toStartOf="@id/articleTitle"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -24,21 +24,19 @@
             android:id="@+id/articleTitle"
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:text="A Cake for Kotlin: Exploring framework-less depency injection for Kotlin"
+            android:layout_marginStart="10dp"
             android:textSize="14sp"
             android:textStyle="bold"
-            android:layout_marginLeft="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/thumb"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:layout_marginTop="10dp"
             android:id="@+id/articleSelfText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:maxHeight="100dp"
-            android:text="Is it possible to create a list of strings given a list of CharArray, in which each string is formed  by the elements that occupy the index i in each CharArray in the list? Like this:\nList&lt;CharArray&gt; = {[A,B,C],[D,E,F]} then the resulting List&lt;String&gt; = {“AD”, “BE”, “CF”}. If it is possible to do this using as many collections functions as possible. I wish to understand them as much as I can, here is where Kotlin shines (besides its concise and pretty syntax)"
             app:autoSizeMaxTextSize="20sp"
             app:autoSizeMinTextSize="12sp"
             app:autoSizeTextType="uniform"

@@ -34,20 +34,21 @@ class DetailsFragment : Fragment() {
         }
 
         viewModel.articleViewModelLiveData.observe(viewLifecycleOwner) {
-            if (it.status == Status.SUCCESS) {
-                it.let {
-                    dataBinding.articleSelfText.text = it.data?.selftext?.trim()
-                    dataBinding.articleTitle.text = it.data?.title?.trim()
+            when (it.status) {
+                Status.SUCCESS -> {
+                    it.let {
+                        dataBinding.articleSelfText.text = it.data?.selftext?.trim()
+                        dataBinding.articleTitle.text = it.data?.title?.trim()
+                    }
                 }
-            } else if (it.status == Status.ERROR) {
-                //TODO
-                Log.d("REDDIT_ARTICLES", "onCreateView: ERROR")
-            } else if (it.status == Status.LOADING) {
-                //TODO
-                Log.d("REDDIT_ARTICLES", "onCreateView: LOADING")
-            } else {
-                //TODO
-                Log.d("REDDIT_ARTICLES", "onCreateView: NOT RECOGNIZED")
+                Status.ERROR -> {
+                    //TODO
+                    Log.d("REDDIT_ARTICLES", "onCreateView: ERROR")
+                }
+                Status.LOADING -> {
+                    //TODO
+                    Log.d("REDDIT_ARTICLES", "onCreateView: LOADING")
+                }
             }
         }
 

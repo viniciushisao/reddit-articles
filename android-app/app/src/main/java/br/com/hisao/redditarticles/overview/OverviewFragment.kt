@@ -42,17 +42,19 @@ class OverviewFragment : Fragment() {
 
             changeScreen(it.status)
 
-            if (it.status == Status.SUCCESS) {
-                it.let {
-                    adapter.submitList(it.data)
+            when (it.status) {
+                Status.SUCCESS -> {
+                    it.let {
+                        adapter.submitList(it.data)
+                    }
+                    Log.d("REDDIT_ARTICLES", "onCreateView: SUCCESS")
                 }
-                Log.d("REDDIT_ARTICLES", "onCreateView: SUCCESS")
-            } else if (it.status == Status.ERROR) {
-                Log.d("REDDIT_ARTICLES", "onCreateView: ERROR")
-            } else if (it.status == Status.LOADING) {
-                Log.d("REDDIT_ARTICLES", "onCreateView: LOADING")
-            } else {
-                Log.d("REDDIT_ARTICLES", "onCreateView: NOT RECOGNIZED")
+                Status.ERROR -> {
+                    Log.d("REDDIT_ARTICLES", "onCreateView: ERROR")
+                }
+                Status.LOADING -> {
+                    Log.d("REDDIT_ARTICLES", "onCreateView: LOADING")
+                }
             }
         }
 
@@ -69,18 +71,22 @@ class OverviewFragment : Fragment() {
     }
 
     private fun changeScreen(status: Status) {
-        if (status == Status.LOADING) {
-            dataBinding.articleList.visibility = View.GONE
-            dataBinding.loadingcontainer.visibility = View.VISIBLE
-            dataBinding.errorcontainer.visibility = View.GONE
-        } else if (status == Status.SUCCESS) {
-            dataBinding.articleList.visibility = View.VISIBLE
-            dataBinding.loadingcontainer.visibility = View.GONE
-            dataBinding.errorcontainer.visibility = View.GONE
-        } else if (status == Status.ERROR) {
-            dataBinding.articleList.visibility = View.GONE
-            dataBinding.loadingcontainer.visibility = View.GONE
-            dataBinding.errorcontainer.visibility = View.VISIBLE
+        when (status) {
+            Status.LOADING -> {
+                dataBinding.articleList.visibility = View.GONE
+                dataBinding.loadingcontainer.visibility = View.VISIBLE
+                dataBinding.errorcontainer.visibility = View.GONE
+            }
+            Status.SUCCESS -> {
+                dataBinding.articleList.visibility = View.VISIBLE
+                dataBinding.loadingcontainer.visibility = View.GONE
+                dataBinding.errorcontainer.visibility = View.GONE
+            }
+            Status.ERROR -> {
+                dataBinding.articleList.visibility = View.GONE
+                dataBinding.loadingcontainer.visibility = View.GONE
+                dataBinding.errorcontainer.visibility = View.VISIBLE
+            }
         }
     }
 

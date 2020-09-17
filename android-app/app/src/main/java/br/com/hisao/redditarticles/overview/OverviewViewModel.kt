@@ -9,7 +9,7 @@ import br.com.hisao.redditarticles.model.json.Article
 import javax.inject.Inject
 
 class OverviewViewModel @Inject constructor(
-    val redditRepository: RedditRepository
+    private val redditRepository: RedditRepository
 ) : ViewModel() {
 
     val articleListViewModelLiveData: LiveData<Resource<List<Article>>>

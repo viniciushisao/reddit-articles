@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">RedditArticles</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="image_related_to_the_text">Image related to the Text</string>
+    <string name="error_loading_content">Error loading content</string>
 </resources>

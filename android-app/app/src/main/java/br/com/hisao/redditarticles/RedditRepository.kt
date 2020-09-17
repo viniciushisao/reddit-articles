@@ -28,7 +28,7 @@ class RedditRepository @Inject constructor(
         articleListRepositoryMutableLiveData.postValue(Resource.loading(null))
 
         coroutineScope.launch {
-            val getNewsDefered = webservice.RETROFIT_SERVICE_RETROFIT.getArticles(subject)
+            val getNewsDefered = webservice.RETROFIT_SERVICE_RETROFIT.getArticlesAsync(subject)
             var exception: Exception? = null
             try {
                 val result = getListArticle(getNewsDefered.await().data.children)
