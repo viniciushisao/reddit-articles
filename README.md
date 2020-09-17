@@ -11,8 +11,14 @@ It is designed as [MVVM](https://developer.android.com/jetpack/guide) using jetp
 
 ## Diagrams
 
-1. [Class Diagram](https://github.com/viniciushisao/reddit-articles/blob/master/docs/puml/classdiagram.png)
-2. [Sequence Diagram](https://github.com/viniciushisao/reddit-articles/blob/master/docs/puml/sequencediagram.png)
+### Class Diagram
+
+![Class Diagram](https://github.com/viniciushisao/reddit-articles/blob/master/docs/puml/classdiagram.png?raw=true)
+
+### Sequence Diagram
+
+![Sequence Diagram](https://github.com/viniciushisao/reddit-articles/blob/master/docs/puml/sequencediagram.png?raw=true)
+
 
 
 # TODO
