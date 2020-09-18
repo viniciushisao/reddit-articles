@@ -1,4 +1,4 @@
-package br.com.hisao.redditarticles
+package br.com.hisao.redditarticles.web
 
 import br.com.hisao.redditarticles.model.json.RedditNews
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
@@ -28,7 +28,7 @@ interface RetrofitWebServiceInterface{
 }
 
 object RedditWebServiceApi{
-    val RETROFIT_SERVICE_RETROFIT:RetrofitWebServiceInterface by lazy {
+    val RETROFIT_SERVICE_RETROFIT: RetrofitWebServiceInterface by lazy {
         retrofit.create(RetrofitWebServiceInterface::class.java)
     }
 }

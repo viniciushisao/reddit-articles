@@ -1,6 +1,5 @@
 package br.com.hisao.redditarticles.overview
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import br.com.hisao.redditarticles.databinding.ListArticleItemBinding
 import br.com.hisao.redditarticles.model.json.Article
+import br.com.hisao.redditarticles.utils.TextUtils.Companion.isValidThumbnail
 import com.bumptech.glide.Glide
 
 class OverviewAdapter(private val clickListener: ArticleOnClickListener) :
@@ -23,6 +23,8 @@ class OverviewAdapter(private val clickListener: ArticleOnClickListener) :
     }
 }
 
+
+
 class ViewHolder private constructor(private val dataBinding: ListArticleItemBinding) :
     RecyclerView.ViewHolder(dataBinding.root) {
 
@@ -30,10 +32,9 @@ class ViewHolder private constructor(private val dataBinding: ListArticleItemBin
 
         dataBinding.articleTitle.text = item.title
         dataBinding.articleSelfText.text = item.selftext
-        if (item.thumbnail == null || item.thumbnail!!.isEmpty()) {
+        if (!isValidThumbnail(item.thumbnail)) {
             dataBinding.thumb.visibility = View.GONE
         } else {
-            Log.d("REDDIT_ARTICLES", "ViewHolder:bind: HAS IMAGE: " + item.thumbnail)
             dataBinding.thumb.visibility = View.VISIBLE
             Glide
                 .with(this.itemView.context)

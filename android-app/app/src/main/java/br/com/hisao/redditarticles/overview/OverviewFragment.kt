@@ -1,7 +1,6 @@
 package br.com.hisao.redditarticles.overview
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.navigation.findNavController
+import br.com.hisao.redditarticles.MainActivity
 import br.com.hisao.redditarticles.databinding.FragmentOverviewBinding
 import br.com.hisao.redditarticles.model.Status
 
@@ -17,6 +17,7 @@ class OverviewFragment : Fragment() {
 
     private lateinit var dataBinding: FragmentOverviewBinding
     private val defaultWordToSearch = "kotlin"
+    private val pageName = "Kotlin News"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,6 +37,10 @@ class OverviewFragment : Fragment() {
             viewModel.onArticleListClicked(it)
         })
 
+        //TODO REFACTOR IT
+        val mainAct: MainActivity = activity as MainActivity
+        mainAct.setTitleSupportActionBar(pageName)
+
         dataBinding.articleList.adapter = adapter
 
         viewModel.articleListViewModelLiveData.observe(viewLifecycleOwner) {
@@ -47,13 +52,12 @@ class OverviewFragment : Fragment() {
                     it.let {
                         adapter.submitList(it.data)
                     }
-                    Log.d("REDDIT_ARTICLES", "onCreateView: SUCCESS")
                 }
                 Status.ERROR -> {
-                    Log.d("REDDIT_ARTICLES", "onCreateView: ERROR")
+                    //TODO
                 }
                 Status.LOADING -> {
-                    Log.d("REDDIT_ARTICLES", "onCreateView: LOADING")
+                    //TODO
                 }
             }
         }

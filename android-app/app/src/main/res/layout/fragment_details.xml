@@ -14,36 +14,28 @@
 
         <ImageView
             android:id="@+id/thumb"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:contentDescription="@string/image_related_to_the_text"
-            app:layout_constraintEnd_toStartOf="@id/articleTitle"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/articleTitle"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="10dp"
-            android:textSize="14sp"
-            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/thumb"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/articleSelfText"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content"
             app:autoSizeMaxTextSize="20sp"
             app:autoSizeMinTextSize="12sp"
             app:autoSizeTextType="uniform"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/articleTitle" />
+            app:layout_constraintTop_toBottomOf="@id/horizontal_barrier" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/horizontal_barrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="thumb" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

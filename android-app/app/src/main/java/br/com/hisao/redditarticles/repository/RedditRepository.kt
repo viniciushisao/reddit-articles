@@ -1,12 +1,12 @@
-package br.com.hisao.redditarticles
+package br.com.hisao.redditarticles.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import br.com.hisao.redditarticles.db.ArticleDatabaseDao
 import br.com.hisao.redditarticles.model.Resource
 import br.com.hisao.redditarticles.model.json.Children
 import br.com.hisao.redditarticles.model.json.Article
+import br.com.hisao.redditarticles.web.RedditWebServiceApi
 import kotlinx.coroutines.*
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -36,7 +36,6 @@ class RedditRepository @Inject constructor(
                 clearDatabase()
                 addInDatabase(result)
             } catch (e: Exception) {
-                Log.d("REDDIT_ARTICLES", "getArticles: ERROR " + e.localizedMessage)
                 exception = e
             }
 
@@ -65,7 +64,6 @@ class RedditRepository @Inject constructor(
                 val result = getArticleFromDatabase(articleId)
                 articleRepositoryMutableLiveData.postValue(Resource.success(result))
             } catch (ex: Exception) {
-                Log.d("REDDIT_ARTICLES", "RedditRepository:getArticle: " + ex.localizedMessage)
                 articleRepositoryMutableLiveData.postValue(
                     Resource.error(
                         ex.localizedMessage ?: "",

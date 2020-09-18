@@ -3,7 +3,7 @@ package br.com.hisao.redditarticles.details
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import br.com.hisao.redditarticles.RedditRepository
+import br.com.hisao.redditarticles.repository.RedditRepository
 import br.com.hisao.redditarticles.db.ArticleDatabase
 
 class DetailsViewModelFactory(private val application: Application) :

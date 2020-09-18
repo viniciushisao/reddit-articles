@@ -3,7 +3,7 @@ package br.com.hisao.redditarticles.overview
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import br.com.hisao.redditarticles.RedditRepository
+import br.com.hisao.redditarticles.repository.RedditRepository
 import br.com.hisao.redditarticles.model.Resource
 import br.com.hisao.redditarticles.model.json.Article
 import javax.inject.Inject
