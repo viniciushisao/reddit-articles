@@ -5,10 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.navArgs
-import br.com.hisao.redditarticles.MainActivity
+import br.com.hisao.redditarticles.MainActivitySharedViewModel
 import br.com.hisao.redditarticles.databinding.FragmentDetailsBinding
 import br.com.hisao.redditarticles.model.Status
 import br.com.hisao.redditarticles.utils.TextUtils
@@ -18,6 +19,8 @@ import com.bumptech.glide.Glide
 class DetailsFragment : Fragment() {
     private lateinit var dataBinding: FragmentDetailsBinding
     private val args: DetailsFragmentArgs by navArgs()
+    private val activitySharedViewModel: MainActivitySharedViewModel by activityViewModels()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,6 +36,7 @@ class DetailsFragment : Fragment() {
         val viewModel: DetailsViewModel by lazy {
             ViewModelProvider(this, detailsViewModelFactory).get(DetailsViewModel::class.java)
         }
+
 
         viewModel.articleViewModelLiveData.observe(viewLifecycleOwner) {
             when (it.status) {
@@ -55,9 +59,9 @@ class DetailsFragment : Fragment() {
                             dataBinding.thumb.visibility = View.GONE
                         }
 
-                        //TODO REFACTOR IT
-                        val mainAct: MainActivity = activity as MainActivity
-                        it.data?.title?.trim()?.let { it1 -> mainAct.setTitleSupportActionBar(it1) }
+                        it.data?.title?.trim()
+                            ?.let { title -> activitySharedViewModel.updateActionBarTitle(title) }
+
                     }
                 }
                 Status.ERROR -> {

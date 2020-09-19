@@ -2,10 +2,14 @@ package br.com.hisao.redditarticles
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 
 class MainActivity : AppCompatActivity() {
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -14,17 +18,19 @@ class MainActivity : AppCompatActivity() {
 
         NavigationUI.setupActionBarWithNavController(this, actionBar)
 
-    }
+        val mainActivityViewModel = ViewModelProvider(this).get(MainActivitySharedViewModel::class.java)
 
-    fun setTitleSupportActionBar(title : String){
-        supportActionBar?.title = title
+        mainActivityViewModel.actionBarTitleMutableLiveData.observe(this, Observer {
+
+            supportActionBar?.title = it
+        })
+
     }
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = this.findNavController(R.id.myNavHostFragment)
         return navController.navigateUp()
     }
-
 
 
 }
