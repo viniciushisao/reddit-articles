@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -17,10 +18,8 @@ import br.com.hisao.redditarticles.model.Status
 class OverviewFragment : Fragment() {
 
     private lateinit var dataBinding: FragmentOverviewBinding
-    private val defaultWordToSearch = "kotlin"
     private val pageName = "Kotlin News"
     private val activitySharedViewModel: MainActivitySharedViewModel by activityViewModels()
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,6 +43,31 @@ class OverviewFragment : Fragment() {
 
         dataBinding.articleList.adapter = adapter
 
+        dataBinding.searchButton.setOnClickListener {
+
+            val searchString = dataBinding.searchText.text.toString()
+
+            if (isSearchTextValid(searchString)) {
+                viewModel.onSearchButtonClicked(searchString)
+            } else {
+                Toast.makeText(context, "Not Valid Text", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        setObservables(viewModel, adapter)
+
+        return dataBinding.root
+    }
+
+    private fun isSearchTextValid(searchText: String): Boolean {
+
+        //TODO special chars, spaces, etc, length
+
+        return searchText.isNotEmpty() && searchText.isNotBlank();
+    }
+
+
+    private fun setObservables(viewModel: OverviewViewModel, adapter: OverviewAdapter) {
         viewModel.articleListViewModelLiveData.observe(viewLifecycleOwner) {
 
             changeScreen(it.status)
@@ -71,8 +95,9 @@ class OverviewFragment : Fragment() {
             }
         })
 
-        viewModel.fetchArticleList(defaultWordToSearch)
-        return dataBinding.root
+        viewModel.searchSubject.observe(viewLifecycleOwner, Observer {
+            viewModel.fetchArticleList(it)
+        })
     }
 
     private fun changeScreen(status: Status) {
