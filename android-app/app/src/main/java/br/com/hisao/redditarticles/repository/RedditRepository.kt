@@ -106,7 +106,6 @@ class RedditRepository @Inject constructor(
         }
     }
 
-
     private fun getListArticle(list: List<Children>): List<Article> {
 
         val ans: MutableList<Article> = ArrayList()

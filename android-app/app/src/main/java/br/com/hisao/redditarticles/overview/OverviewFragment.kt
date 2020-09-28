@@ -1,7 +1,9 @@
 package br.com.hisao.redditarticles.overview
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -11,7 +13,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.navigation.findNavController
+import androidx.room.paging.LimitOffsetDataSource
 import br.com.hisao.redditarticles.MainActivitySharedViewModel
+import br.com.hisao.redditarticles.R
 import br.com.hisao.redditarticles.databinding.FragmentOverviewBinding
 import br.com.hisao.redditarticles.model.Status
 
@@ -38,6 +42,8 @@ class OverviewFragment : Fragment() {
         val adapter = OverviewAdapter(ArticleOnClickListener {
             viewModel.onArticleListClicked(it)
         })
+
+        setHasOptionsMenu(true)
 
         activitySharedViewModel.updateActionBarTitle(pageName)
 
@@ -118,6 +124,20 @@ class OverviewFragment : Fragment() {
                 dataBinding.errorcontainer.visibility = View.VISIBLE
             }
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        when (item.itemId) {
+            R.id.order_date -> {
+                Log.d("REDDIT_ARTICLES", "OverviewFragment:onOptionsItemSelected: DATE ")
+            }
+            R.id.order_title -> {
+                Log.d("REDDIT_ARTICLES", "OverviewFragment:onOptionsItemSelected: TITLE")
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
 }
