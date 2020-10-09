@@ -16,9 +16,9 @@ private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
 @Singleton
 class RedditRepository @Inject constructor(
-    private val articleDatabaseDao: ArticleDatabaseDao
-) {
+    private val articleDatabaseDao: ArticleDatabaseDao,
     private val webservice: RedditWebServiceApi = RedditWebServiceApi
+) {
     val articleRepositoryMutableLiveData = MutableLiveData<Resource<Article>>()
     val articleListRepositoryMutableLiveData = MutableLiveData<Resource<List<Article>>>()
 
@@ -105,7 +105,6 @@ class RedditRepository @Inject constructor(
             articleDatabaseDao.getArticle(articleId)
         }
     }
-
 
     private fun getListArticle(list: List<Children>): List<Article> {
 

@@ -8,14 +8,13 @@ package Cloud <<Cloud>> {
 package Database <<Database>> {
 }
 
-
 AppCompatActivity <|-- MainActivity   : Extends
 MainActivity  --*  OverviewFragment : contains
 MainActivity  --*  DetailsFragment : contains
 DetailsFragment --* DetailsViewModel :  contains
-DetailsFragment .. DetailsViewModel :  LiveData
+DetailsFragment <.. DetailsViewModel :  LiveData
 OverviewFragment --* OverviewViewModel : contains
-OverviewFragment .. OverviewViewModel : LiveData
+OverviewFragment <.. OverviewViewModel : LiveData
 ViewModel <|-- OverviewViewModel: extends
 ViewModel <|-- DetailsViewModel: extends
 DetailsViewModel --* Repository : contains

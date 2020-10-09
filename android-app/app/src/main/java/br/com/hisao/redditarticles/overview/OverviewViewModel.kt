@@ -16,12 +16,20 @@ class OverviewViewModel @Inject constructor(
         get() = redditRepository.articleListRepositoryMutableLiveData
 
     private val _navigateToArticleDetail = MutableLiveData<String>()
-    val navigateToArticleDetail
+    val navigateToArticleDetail: LiveData<String>
         get() = _navigateToArticleDetail
 
 
+    private val _searchSubject = MutableLiveData<String>()
+    val searchSubject: LiveData<String>
+        get() = _searchSubject
+
     fun fetchArticleList(subject: String) {
         redditRepository.getArticles(subject)
+    }
+
+    fun onSearchButtonClicked(subject: String) {
+        _searchSubject.postValue(subject)
     }
 
     fun onArticleListClicked(id: String) {
@@ -31,5 +39,14 @@ class OverviewViewModel @Inject constructor(
     fun navigatedToArticleDetail() {
         _navigateToArticleDetail.value = null
     }
+
+    enum class OrderBy {
+        DATE, TITLE
+    }
+
+    fun orderList(orderBy: OrderBy) {
+
+    }
+
 }
 

@@ -12,6 +12,8 @@ endbox
 
 
 user -> manager : open
+manager --> user : enter the text to to search
+user -> manager: text
 manager --> user : loading
 alt success
 manager -> reddit : fetch article list
