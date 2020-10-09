@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import br.com.hisao.redditarticles.databinding.ListArticleItemBinding
 import br.com.hisao.redditarticles.model.json.Article
-import br.com.hisao.redditarticles.utils.TextUtils.Companion.isValidThumbnail
+import br.com.hisao.redditarticles.util.isValidThumbnailUrl
 import com.bumptech.glide.Glide
 
 class OverviewAdapter(private val clickListener: ArticleOnClickListener) :
@@ -32,7 +32,7 @@ class ViewHolder private constructor(private val dataBinding: ListArticleItemBin
 
         dataBinding.articleTitle.text = item.title
         dataBinding.articleSelfText.text = item.selftext
-        if (!isValidThumbnail(item.thumbnail)) {
+        if (item.thumbnail.isValidThumbnailUrl()) {
             dataBinding.thumb.visibility = View.GONE
         } else {
             dataBinding.thumb.visibility = View.VISIBLE

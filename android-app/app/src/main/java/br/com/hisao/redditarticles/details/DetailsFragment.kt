@@ -12,7 +12,7 @@ import androidx.navigation.fragment.navArgs
 import br.com.hisao.redditarticles.MainActivitySharedViewModel
 import br.com.hisao.redditarticles.databinding.FragmentDetailsBinding
 import br.com.hisao.redditarticles.model.Status
-import br.com.hisao.redditarticles.utils.TextUtils
+import br.com.hisao.redditarticles.util.isValidThumbnailUrl
 import com.bumptech.glide.Glide
 
 
@@ -37,7 +37,6 @@ class DetailsFragment : Fragment() {
             ViewModelProvider(this, detailsViewModelFactory).get(DetailsViewModel::class.java)
         }
 
-
         viewModel.articleViewModelLiveData.observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
@@ -45,7 +44,7 @@ class DetailsFragment : Fragment() {
                         dataBinding.articleSelfText.text = it.data?.selftext?.trim()
 
                         val urlThumb = it.data?.thumbnail
-                        if (TextUtils.isValidThumbnail(urlThumb)) {
+                        if (urlThumb.isValidThumbnailUrl()) {
                             dataBinding.thumb.visibility = View.VISIBLE
                             context?.let { it1 ->
                                 Glide

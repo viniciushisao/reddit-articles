@@ -3,7 +3,7 @@
 Android running kotlin and Gradle. Use your favorite tools to compile and run
 
 # What is
-It retrieves **one** page of reddit api. This page, by default is *kotlin* 
+It retrieves **one** page of reddit api in the subject the user searches.
 
 # Architecture
 
