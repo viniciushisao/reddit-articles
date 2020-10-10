@@ -18,6 +18,7 @@ import br.com.hisao.redditarticles.MainActivitySharedViewModel
 import br.com.hisao.redditarticles.R
 import br.com.hisao.redditarticles.databinding.FragmentOverviewBinding
 import br.com.hisao.redditarticles.model.Status
+import br.com.hisao.redditarticles.util.isSearchTextValid
 
 class OverviewFragment : Fragment() {
 
@@ -49,27 +50,24 @@ class OverviewFragment : Fragment() {
 
         dataBinding.articleList.adapter = adapter
 
-        dataBinding.searchButton.setOnClickListener {
-
-            val searchString = dataBinding.searchText.text.toString()
-
-            if (isSearchTextValid(searchString)) {
-                viewModel.onSearchButtonClicked(searchString)
-            } else {
-                Toast.makeText(context, "Not Valid Text", Toast.LENGTH_SHORT).show()
-            }
-        }
+        setListeners(dataBinding, viewModel)
 
         setObservables(viewModel, adapter)
 
         return dataBinding.root
     }
 
-    private fun isSearchTextValid(searchText: String): Boolean {
+    private fun setListeners(binding: FragmentOverviewBinding, viewModel: OverviewViewModel) {
+        dataBinding.searchButton.setOnClickListener {
 
-        //TODO special chars, spaces, etc, length
+            val searchString = dataBinding.searchText.text.toString()
 
-        return searchText.isNotEmpty() && searchText.isNotBlank();
+            if (searchString.isSearchTextValid()) {
+                viewModel.onSearchButtonClicked(searchString)
+            } else {
+                Toast.makeText(context, "Not Valid Text", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
 
